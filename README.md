@@ -8,9 +8,7 @@ We look forward to the research produced using this data!
 
 ### Download
 
-For each, we have a training split of 250K samples, as well as validation and test splits of 5K samples.
-
-For each model, we're releasing temperature 1 samples
+For each, we have a training split of 500K total examples, as well as validation and test splits of 10K examples.
 
 All data is located in Google Cloud Storage, at under the directory `gs://gpt-2/output-dataset/v1`.
 
@@ -34,7 +32,14 @@ We've provided a script to download all of them, in `download_dataset.py`.
 
 We're interested in seeing research in detectability of our model generations.
 
-We've provided a baseline of logistic regression on tf-idf, in `baseline.py`.
+We've provided a starter baseline which trains a logistic regression detector on TF-IDF unigram and bigram features, in `baseline.py`.
+
+| Model | Temperature 1 | Top-K 40 |
+| ----- | ------ | ------ |
+| 117M  | 88.29% | 96.79% |
+| 345M  | 88.94% | 95.22% |
+| 762M  | 77.16% | 94.43% |
+| 1542M | 74.31% | 92.69% |
 
 ### Data removal requests
 
