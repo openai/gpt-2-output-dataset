@@ -43,11 +43,11 @@ We've provided a starter baseline which trains a logistic regression detector on
 
 ### Initial Analysis
 
-<img src="https://i.imgur.com/PZ3GOeS.png" width="723.0" height="450" title="Impact of Document Length">
+<img src="https://i.imgur.com/PZ3GOeS.png" width="713" height="502" title="Impact of Document Length">
 
 Shorter documents are harder to detect. Accuracy of detection of a short documents of 500 characters (a long paragraph) is about 15% lower.
 
-<img src="https://i.imgur.com/eH9Ogqo.png" width="713.0" height="502" title="Part of Speech Analysis">
+<img src="https://i.imgur.com/eH9Ogqo.png" width="723" height="450" title="Part of Speech Analysis">
 
 Truncated sampling, which is commonly used for high-quality generations from the GPT-2 model family, results in a shift in the part of speech distribution of the generated text compared to real text. A clear example is the underuse of proper nouns and overuse of pronouns which are more generic. This shift contributes to the 8% to 18% higher detection rate of Top-K samples compared to random samples across models.
 
