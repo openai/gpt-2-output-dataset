@@ -45,7 +45,7 @@ We've provided a starter baseline which trains a logistic regression detector on
 
 <img src="https://i.imgur.com/PZ3GOeS.png" width="475" height="335" title="Impact of Document Length">
 
-Shorter documents are harder to detect. Accuracy of detection of a short documents of 500 characters (a long paragraph) is about 15% lower.
+Unsurprisingly, shorter documents are harder to detect and performance improves gradually with length. Accuracy of detection of short documents of 500 characters (a long paragraph) is about 15% lower.
 
 <img src="https://i.imgur.com/eH9Ogqo.png" width="482" height="300" title="Part of Speech Analysis">
 
