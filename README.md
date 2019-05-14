@@ -32,7 +32,7 @@ We've provided a script to download all of them, in `download_dataset.py`.
 
 We're interested in seeing research in detectability of GPT-2 model family generations.
 
-We've provided a starter baseline which trains a logistic regression detector on TF-IDF unigram and bigram features, in `baseline.py`.
+We've provided a starter baseline which trains a logistic regression detector on TF-IDF unigram and bigram features, in `baseline.py`.  The baseline achieves the following accuracies:
 
 | Model | Temperature 1 | Top-K 40 |
 | ----- | ------ | ------ |
