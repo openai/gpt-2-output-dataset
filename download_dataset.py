@@ -16,6 +16,7 @@ for ds in [
     for split in ['train', 'valid', 'test']:
         filename = ds + "." + split + '.jsonl'
         r = requests.get("https://openaipublic.azureedge.net/gpt-2/output-dataset/v1/" + filename, stream=True)
+        r.raise_for_status()
 
         with open(os.path.join(subdir, filename), 'wb') as f:
             file_size = int(r.headers["content-length"])
