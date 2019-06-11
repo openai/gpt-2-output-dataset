@@ -4,9 +4,7 @@ import requests
 from tqdm import tqdm
 
 subdir = 'data'
-if not os.path.exists(subdir):
-    os.makedirs(subdir)
-subdir = subdir.replace('\\','/') # needed for Windows
+os.makedirs(subdir, exist_ok=True)
 
 for ds in [
     'webtext',
