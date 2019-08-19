@@ -28,28 +28,17 @@ where split is one of `train`, `test`, and `valid`.
 
 We've provided a script to download all of them, in `download_dataset.py`.
 
+#### Finetuned model samples
+
+Additionally, we encourage research on detection of finetuned models.  We have released data under `gs://gpt-2/output-dataset/v1-amazonfinetune/` with samples from a GPT-2 full model finetuned to output Amazon reviews.
+
 ### Detectability baselines
 
 We're interested in seeing research in detectability of GPT-2 model family generations.
 
-We've provided a starter baseline which trains a logistic regression detector on TF-IDF unigram and bigram features, in `baseline.py`.  The baseline achieves the following accuracies:
+We provide some [initial analysis](detection.md) of two baselines, as well as [code](./baseline.py) for the better baseline.
 
-| Model | Temperature 1 | Top-K 40 |
-| ----- | ------ | ------ |
-| 117M  | 88.29% | 96.79% |
-| 345M  | 88.94% | 95.22% |
-| 762M  | 77.16% | 94.43% |
-| 1542M | 74.31% | 92.69% |
-
-### Initial Analysis
-
-<img src="https://i.imgur.com/PZ3GOeS.png" width="475" height="335" title="Impact of Document Length">
-
-Unsurprisingly, shorter documents are harder to detect and performance improves gradually with length. Accuracy of detection of short documents of 500 characters (a long paragraph) is about 15% lower.
-
-<img src="https://i.imgur.com/eH9Ogqo.png" width="482" height="300" title="Part of Speech Analysis">
-
-Truncated sampling, which is commonly used for high-quality generations from the GPT-2 model family, results in a shift in the part of speech distribution of the generated text compared to real text. A clear example is the underuse of proper nouns and overuse of pronouns which are more generic. This shift contributes to the 8% to 18% higher detection rate of Top-K samples compared to random samples across models.
+Overall, we are able to achieve accuracies in the mid-90s for Top-K 40 generations, and mid-70s to high-80s (depending on model size) for random generations.  We also find some evidence that adversaries can evade detection via finetuning from released models.
 
 ### Data removal requests
 
