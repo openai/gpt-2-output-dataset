@@ -5,7 +5,7 @@ This directory contains the code for working with the GPT-2 output detector mode
 [RoBERTa model](https://ai.facebook.com/blog/roberta-an-optimized-method-for-pretraining-self-supervised-nlp-systems/)
 with [the outputs of the 1.5B-parameter GPT-2 model](https://github.com/openai/gpt-2-output-dataset).
 For motivations and discussions regarding the release of this detector model, please check out 
-[out blog post](https://openai.com/blog/gpt-2-6-month-follow-up/) and [report](https://arxiv.org/abs/1908.09203).
+[our blog post](https://openai.com/blog/gpt-2-1-5b-release/) and [report](https://d4mucfpksywv.cloudfront.net/papers/GPT_2_Report.pdf).
 
 ## Downloading a pre-trained detector model
 
