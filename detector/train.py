@@ -281,7 +281,7 @@ if __name__ == '__main__':
     parser.add_argument('--weight-decay', type=float, default=0)
     args = parser.parse_args()
 
-    nproc = int(subprocess.check_output(['python', '-c', "import torch;"
+    nproc = int(subprocess.check_output([sys.executable, '-c', "import torch;"
                                          "print(torch.cuda.device_count() if torch.cuda.is_available() else 1)"]))
     if nproc > 1:
         print(f'Launching {nproc} processes ...', file=sys.stderr)
