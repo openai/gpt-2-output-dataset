@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+<title>GPT-2 Output Detector</title>
+<style type="text/css">
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+h1 {
+    font-weight: lighter;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#container {
+    margin: auto;
+    width: 960px;
+}
+
+#textbox {
+    font-family: serif;
+    font-size: 16pt;
+    width: 100%;
+    height: 480px;
+    padding: 20px 30px;
+    line-height: 1.6;
+}
+
+.bar-row {
+    height: 30px;
+}
+#real-percentage {
+    width: 80px;
+    vertical-align: top;
+}
+#bar-container {
+    width: 800px;
+    background-color: #ff7674;
+    line-height: 0.5;
+    position:relative;
+    top:6px;
+}
+#fake-percentage {
+    width: 80px;
+    vertical-align: top;
+}
+#bar {
+    display: inline-block;
+    height: 30px;
+    background-color: #83aaff;
+}
+em {
+    font-family: monospace;
+    font-style: normal;
+}
+</style>
+</head>
+<body>
+<div id="container">
+    <h1>GPT-2 Output Detector Demo</h1>
+    <p>
+        This is an online demo of the
+        <a href="https://github.com/openai/gpt-2-output-dataset/tree/master/detector">GPT-2 output detector</a>
+        model. Enter some text in the text box; the predicted probabilities will be displayed below.
+        <u>The results start to get reliable after around 50 tokens.</u>
+    </p>
+    <textarea id="textbox" placeholder="Enter text here"></textarea>
+    <div><table cellspacing="0" cellpadding="0">
+        <tr class="bar-row" style="vertical-align: bottom;">
+            <td style="text-align: left;">Real</td>
+            <td id="message" style="text-align: center;"></td>
+            <td style="text-align: right;">Fake</td>
+        </tr>
+        <tr class="bar-row">
+            <td id="real-percentage" style="text-align: left; vertical-align: bottom;"></td>
+            <td id="bar-container"><div id="bar" style="width: 50%;"></div></td>
+            <td id="fake-percentage" style="text-align: right; vertical-align: bottom;"></td>
+        </tr>
+    </table></div>
+</div>
+<script>
+let textbox = document.getElementById('textbox');
+let last_submit = null;
+
+let real_percentage = document.getElementById('real-percentage');
+let fake_percentage = document.getElementById('fake-percentage');
+let bar = document.getElementById('bar');
+let message = document.getElementById('message');
+
+function update_graph(result) {
+    if (result === null) {
+        real_percentage.innerHTML = '';
+        fake_percentage.innerHTML = '';
+        bar.style.width = '50%';
+        message.innerHTML = '';
+    } else {
+        let percentage = result.real_probability;
+        real_percentage.innerHTML = (100 * percentage).toFixed(2) + '%';
+        fake_percentage.innerHTML = (100 * (1 - percentage)).toFixed(2) + '%';
+        bar.style.width = (100 * percentage).toFixed(2) + '%';
+        if (result.used_tokens === result.all_tokens) {
+            message.innerHTML = `Prediction based on ${result.used_tokens} tokens`;
+        } else {
+            message.innerHTML = `Prediction based on the first ${result.used_tokens} tokens among the total ${result.all_tokens}`;
+        }
+    }
+}
+
+textbox.oninput = () => {
+    if (last_submit) {
+        clearTimeout(last_submit);
+    }
+    if (textbox.value.length === 0) {
+        update_graph(null);
+        return;
+    }
+    message.innerText = 'Predicting ...';
+    last_submit = setTimeout(() => {
+        let req = new XMLHttpRequest();
+        if (textbox.value.length === 0) {
+            update_graph(null);
+            return;
+        }
+        req.open('GET', '/?' + textbox.value, true);
+        req.onreadystatechange = () => {
+            if (req.readyState !== 4) return;
+            if (req.status !== 200) throw new Error("HTTP status: " + req.status);
+            let result = JSON.parse(req.responseText);
+            update_graph(result);
+        };
+        req.send();
+    }, 1000);
+
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    textbox.focus();
+});
+</script>
+</body>
+</html>
