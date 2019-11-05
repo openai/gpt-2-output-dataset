@@ -35,6 +35,8 @@ pip install -r requirements.txt
 python -m detector.server detector-base.pt
 ```
 
+After the script says "Ready to serve", nagivate to http://localhost:8080 to view the UI.
+
 ## Training a new detector model
 
 You can use the provided training script to train a detector model on a new set of datasets.
