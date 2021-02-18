@@ -12,13 +12,13 @@ For motivations and discussions regarding the release of this detector model, pl
 Download the weights for the fine-tuned `roberta-base` model (478 MB):
 
 ```bash
-wget https://storage.googleapis.com/gpt-2/detector-models/v1/detector-base.pt
+wget https://openaipublic.azureedge.net/gpt-2/detector-models/v1/detector-base.pt
 ```
 
 or `roberta-large` model (1.5 GB):
 
 ```bash
-wget https://storage.googleapis.com/gpt-2/detector-models/v1/detector-large.pt
+wget https://openaipublic.azureedge.net/gpt-2/detector-models/v1/detector-large.pt
 ```
 
 These RoBERTa-based models are fine-tuned with a mixture of temperature-1 and nucleus sampling outputs,

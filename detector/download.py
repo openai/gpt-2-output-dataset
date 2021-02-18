@@ -30,7 +30,7 @@ def download(*datasets, data_dir='data'):
             if os.path.isfile(output_file):
                 continue
 
-            r = requests.get("https://storage.googleapis.com/gpt-2/output-dataset/v1/" + filename, stream=True)
+            r = requests.get("https://openaipublic.azureedge.net/gpt-2/output-dataset/v1/" + filename, stream=True)
 
             with open(output_file, 'wb') as f:
                 file_size = int(r.headers["content-length"])
