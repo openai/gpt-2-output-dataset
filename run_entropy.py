@@ -2,7 +2,7 @@ import argparse
 import glob
 import os
 import torch
-from transformers import (GPT2LMHeadModel, GPT2Tokenizer)
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from tqdm import tqdm
 import torch.nn as nn
 from einops import rearrange

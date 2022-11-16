@@ -11,9 +11,9 @@ subdir = subdir.replace('\\','/') # needed for Windows
 for ds in [
     'webtext',
     'small-117M',  'small-117M-k40',
-    'medium-345M', 'medium-345M-k40',
-    'large-762M',  'large-762M-k40',
-    'xl-1542M',    'xl-1542M-k40',
+    # 'medium-345M', 'medium-345M-k40',
+    # 'large-762M',  'large-762M-k40',
+    # 'xl-1542M',    'xl-1542M-k40',
 ]:
     for split in ['train', 'valid', 'test']:
         filename = ds + "." + split + '.jsonl'
