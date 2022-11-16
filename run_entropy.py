@@ -53,7 +53,7 @@ def process_single(model, tokenizer, args):
     if args.output:
         output_file = args.output
     else:
-        output_file = os.path.join(args.data, f'{args.source}.{args.split}.nll')
+        output_file = os.path.join(args.data_dir, f'{args.source}.{args.split}.nll')
 
     with open(output_file, 'w') as fw:
         for line in tqdm(data):
