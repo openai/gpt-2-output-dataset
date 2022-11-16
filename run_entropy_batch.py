@@ -66,7 +66,7 @@ def process_single(model, tokenizer, args):
 
     num_batches = round(len(data)/args.batch_size)
     with open(output_file, 'w') as fw:
-        for i in tqdm(range(1)):
+        for i in tqdm(range(num_batches)):
             batch = data[i*args.batch_size: (i*args.batch_size+args.batch_size)]
             if len(batch) == 0:
                 continue
