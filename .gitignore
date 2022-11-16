@@ -1,2 +1,3 @@
 .mypy_cache/
 data/
+__pycache__
