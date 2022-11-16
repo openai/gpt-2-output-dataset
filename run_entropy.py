@@ -64,7 +64,7 @@ def process_single(model, tokenizer, args):
             logits = output.logits.to(device)
             target = encoded_input['input_ids'].to(device)
 
-            logits = rearrange(logits, 'B L V -> B V L') # B=1
+            logits = rearrange(logits, 'B L V -> B V L') 
             shift_logits = logits[..., :, :-1] # Use the first L-1 tokens to predict the next
             shift_target = target[..., 1:]
 
