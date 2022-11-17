@@ -58,6 +58,7 @@ def load_model(args):
 
 @torch.no_grad()
 def process_single(model, tokenizer, args):
+    MAX_LEN = 1024
     device = model.device
     print(f'model is on device: {device}')
     criterian = nn.NLLLoss(reduction='none')
@@ -76,7 +77,10 @@ def process_single(model, tokenizer, args):
             if len(batch) == 0:
                 continue
             
-            encoded_input = tokenizer(batch, return_tensors='pt', padding=True).to(device)
+            try:
+                encoded_input = tokenizer(batch, return_tensors='pt', padding='max_length', truncation=True).to(device)
+            except Exception:
+                raise
             input_ids = encoded_input['input_ids']
             mask = encoded_input['attention_mask']
 
@@ -84,8 +88,8 @@ def process_single(model, tokenizer, args):
                 output = model(**encoded_input, labels=input_ids)
             except RuntimeError:
                 print(f'batch index: {i}')
-                print(f'batch: {batch}')
-                print(f'encoded_input: {encoded_input}')
+                # print(f'batch: {batch}')
+                print('encoded_input.input_ids: {}'.format(input_ids))
                 raise
             logits = output.logits.to(device)
             target = encoded_input['input_ids'].to(device)
