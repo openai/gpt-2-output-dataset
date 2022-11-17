@@ -22,7 +22,9 @@ def create_parser():
     ])
     parser.add_argument('--split', type=str, choices=['train', 'test', 'valid'])
     parser.add_argument('--batch_size', '-bs', type=int, default=32)
+    parser.add_argument('--start_batch', type=int, default=0)
     parser.add_argument('--output', '-o', type=str, default='', help='output file or dir')
+    parser.add_argument('--device_id', type=int, default=0)
     return parser
 
 def load_model(args):
@@ -43,7 +45,10 @@ def load_model(args):
     tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
     tokenizer.pad_token = tokenizer.eos_token
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if torch.cuda.is_available():
+        device = torch.device(f'cuda:{args.device_id}')
+    else:
+        device = torch.device('cpu')
     model.to(device)
     # num_gpus = torch.cuda.device_count()
     # parallelize(model, num_gpus=num_gpus, fp16=False, verbose='simple')
@@ -66,7 +71,7 @@ def process_single(model, tokenizer, args):
 
     num_batches = round(len(data)/args.batch_size)
     with open(output_file, 'w') as fw:
-        for i in tqdm(range(num_batches)):
+        for i in tqdm(range(args.start_batch, num_batches)):
             batch = data[i*args.batch_size: (i*args.batch_size+args.batch_size)]
             if len(batch) == 0:
                 continue
@@ -75,7 +80,13 @@ def process_single(model, tokenizer, args):
             input_ids = encoded_input['input_ids']
             mask = encoded_input['attention_mask']
 
-            output = model(**encoded_input, labels=input_ids)
+            try:
+                output = model(**encoded_input, labels=input_ids)
+            except RuntimeError:
+                print(f'batch index: {i}')
+                print(f'batch: {batch}')
+                print(f'encoded_input: {encoded_input}')
+                raise
             logits = output.logits.to(device)
             target = encoded_input['input_ids'].to(device)
 
