@@ -58,7 +58,6 @@ def load_model(args):
 
 @torch.no_grad()
 def process_single(model, tokenizer, args):
-    MAX_LEN = 1024
     device = model.device
     print(f'model is on device: {device}')
     criterian = nn.NLLLoss(reduction='none')
