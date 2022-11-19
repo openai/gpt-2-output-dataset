@@ -21,6 +21,7 @@ def create_parser():
     ])
     parser.add_argument('--split', type=str, choices=['train', 'test', 'valid'])
     parser.add_argument('--output', '-o', type=str, default='', help='output file or dir')
+    parser.add_argument('--model', type=str, default='', help='if specified, this model will be used for estimating the NLL in replace of the default models')
     return parser
 
 def load_model(args):
@@ -36,10 +37,16 @@ def load_model(args):
         pretrained_weights = 'gpt2-large'
     elif args.source.startswith('xl'):
         pretrained_weights = 'gpt2-xl'
+    
+    # overwrite with --model
+    if args.model:
+        pretrained_weights = args.model
+
     model = model_class.from_pretrained(pretrained_weights)
     tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
+
     return model, tokenizer
 
 @torch.no_grad()
@@ -52,7 +59,7 @@ def process_single(model, tokenizer, args):
     if args.output:
         output_file = args.output
     else:
-        output_file = os.path.join(args.data_dir, f'{args.source}.{args.split}.nll')
+        output_file = os.path.join(args.data_dir, f'{args.source}.{args.split}.model={args.model}.nll')
 
     with open(output_file, 'w') as fw:
         for line in tqdm(data[:32]):
