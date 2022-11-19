@@ -44,6 +44,7 @@ def load_model(args):
 
     model = model_class.from_pretrained(pretrained_weights)
     tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
+    tokenizer.pad_token = tokenizer.eos_token
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
 

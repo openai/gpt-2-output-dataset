@@ -25,6 +25,7 @@ def create_parser():
     parser.add_argument('--start_batch', type=int, default=0)
     parser.add_argument('--output', '-o', type=str, default='', help='output file or dir')
     parser.add_argument('--device_id', type=int, default=0)
+    parser.add_argument('--model', type=str, default='', choices=['gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl'], help='if specified, this model will be used for estimating the NLL in replace of the default models')
     return parser
 
 def load_model(args):
@@ -40,6 +41,10 @@ def load_model(args):
         pretrained_weights = 'gpt2-large'
     elif args.source.startswith('xl'):
         pretrained_weights = 'gpt2-xl'
+    
+    # overwrite with --model
+    if args.model:
+        pretrained_weights = args.model
 
     model = model_class.from_pretrained(pretrained_weights)
     tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
