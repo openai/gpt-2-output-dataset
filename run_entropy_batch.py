@@ -72,7 +72,7 @@ def process_single(model, tokenizer, args):
     if args.output:
         output_file = args.output
     else:
-        output_file = os.path.join(args.data_dir, f'{args.source}.{args.split}.nll')
+        output_file = os.path.join(args.data_dir, f'{args.source}.{args.split}.model={args.model}.nll')
 
     num_batches = len(data) // args.batch_size
     if len(data) % args.batch_size > 0:
