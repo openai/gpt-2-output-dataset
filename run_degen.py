@@ -9,15 +9,17 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from tqdm import tqdm
 import torch.nn as nn
 from einops import rearrange
+import numpy as np
+import json
 
 
-def _load_data(data_dir: str, filename: str):
+def _load_data(data_dir: str, filename: str, n=np.inf):
     path = os.path.join(data_dir, filename)
     texts = []
     for i, line in enumerate(open(path)):
         if i >= n:
             break
-        texts.append(json.loads(line)['text'])
+        texts.append(json.loads(line)['string'])
     return texts
 
 
@@ -29,7 +31,7 @@ def create_parser():
     parser.add_argument('--start_batch', type=int, default=0)
     parser.add_argument('--output', '-o', type=str, default='', help='output file or dir')
     parser.add_argument('--device_id', type=int, default=0)
-    parser.add_argument('--model', type=str, default='', choices=['gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl'], help='if specified, this model will be used for estimating the NLL in replace of the default models')
+    parser.add_argument('--model', '-m', type=str, default='gpt2', choices=['gpt2', 'gpt2-medium', 'gpt2-large', 'gpt2-xl'], help='if specified, this model will be used for estimating the NLL in replace of the default models')
     return parser
 
 def load_model(args):
