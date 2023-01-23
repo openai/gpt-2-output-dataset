@@ -51,10 +51,10 @@ p_small_k40_c <- ggplot(d_small_k40_c, aes(freq, power)) +
 ggsave("plot/small-117M-k40.test.4models.freq_power_1k.pdf", plot=p_small_k40_c)
 
 # medium-345M.test
-d_medium_gpt2 <- fread("plot/medium-345M.test.model=gpt2.freq_power_1k.csv")
-d_medium_medium <- fread("plot/medium-345M.test.model=gpt2-medium.freq_power_1k.csv")
-d_medium_large <- fread("plot/medium-345M.test.model=gpt2-large.freq_power_1k.csv")
-d_medium_xl <- fread("plot/medium-345M.test.model=gpt2-xl.freq_power_1k.csv")
+d_medium_gpt2 <- fread("plot/medium-345M.test.model=gpt2.freq_power.csv")
+d_medium_medium <- fread("plot/medium-345M.test.model=gpt2-medium.freq_power.csv")
+d_medium_large <- fread("plot/medium-345M.test.model=gpt2-large.freq_power.csv")
+d_medium_xl <- fread("plot/medium-345M.test.model=gpt2-xl.freq_power.csv")
 
 d_medium_gpt2$model = "gpt2"
 d_medium_medium$model = "gpt2-medium"
@@ -65,6 +65,10 @@ d_medium_c <- rbindlist(list(d_medium_gpt2, d_medium_medium, d_medium_large, d_m
 p_medium_c <- ggplot(d_medium_c, aes(freq, power)) +
   geom_smooth(aes(linetype = model, fill = model, colour = model))
 ggsave("plot/medium-345M.test.4models.freq_power_1k.pdf", plot=p_medium_c)
+
+# medium-345M-k40.test
+d_medium_k40_gpt2 <- fread("plot/medium-345M-k40.test.model=gpt2.freq_power.csv")
+
 
 # large-762M.test
 
@@ -90,3 +94,19 @@ d_gpt2_webtext_small <- rbindlist(list(d_gpt2_webtext, d_gpt2_small, d_gpt2_smal
 p_gpt2_webtext_small <- ggplot(d_gpt2_webtext_small, aes(freq, power)) +
   geom_smooth(aes(linetype = data, fill = data, colour = data))
 ggsave("plot/gpt2_webtext_small_small40k.freq_power.pdf", plot=p_gpt2_webtext_small)
+
+d_gpt2_medium <- d_medium_gpt2[,.(freq, power)]
+d_gpt2_medium$data <- "medium"
+
+d_gpt2_medium40k <- d_medium_k40_gpt2[,.(freq, power)]
+d_gpt2_medium40k$data <- "medium-40k"
+
+d_gpt2_wb_sm_me <- rbindlist(list(d_gpt2_webtext, d_gpt2_small, d_gpt2_medium))
+p_gpt2_wb_sm_me <- ggplot(d_gpt2_wb_sm_me, aes(freq, power)) +
+  geom_smooth(aes(linetype = data, fill = data, colour = data))
+ggsave("plot/gpt2_webtext_small_medium.freq_power.pdf", plot=p_gpt2_wb_sm_me)
+
+d_gpt2_wb_me_me40k <- rbindlist(list(d_gpt2_webtext, d_gpt2_medium, d_gpt2_medium40k))
+p_gpt2_wb_sm_me <- ggplot(d_gpt2_wb_me_me40k, aes(freq, power)) +
+  geom_smooth(aes(linetype = data, fill = data, colour = data))
+ggsave("plot/gpt2_webtext_medium_medium40k.freq_power.pdf", plot=p_gpt2_wb_sm_me)
