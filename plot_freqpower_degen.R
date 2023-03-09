@@ -40,3 +40,28 @@ d_uncond_sampling <- rbindlist(list(d_uncond_sampling, d_uncond_gold))
 p <- ggplot(d_uncond_sampling, aes(freq, power)) +
   geom_smooth(aes(linetype = temperature, fill = temperature, colour = temperature))
 ggsave("plot/degen/uncond_smpl_temp1to9.pdf", plot=p)
+
+
+# Unconditional, top k with diff values
+d_uncond_topk <- data.table(freq=numeric(),
+                            power=numeric(),
+                            k=character())
+for (k in c(5, 10, 20, 40, 80, 160, 320, 640)) {
+  tmp <- fread(paste0("plot/degen/unconditional_topk_k=", k, "_large.model=gpt2.density.csv"))
+  if (k>=100) {
+    tmp$k <- as.character(k)
+  } else if (k>=10) {
+    tmp$k <- paste0("0", k)
+  } else {
+    tmp$k <- paste0("00", k)
+  }
+  d_uncond_topk <- rbindlist(list(d_uncond_topk, tmp))
+}
+# combine with gold
+d_uncond_gold <- fread("plot/degen/unconditional_gold.model=gpt2.density.csv")
+d_uncond_gold$k <- "gold"
+d_uncond_topk <- rbindlist(list(d_uncond_topk, d_uncond_gold))
+
+p <- ggplot(d_uncond_topk, aes(freq, power)) +
+  geom_smooth(aes(linetype = k, fill = k, colour = k))
+ggsave("plot/degen/uncond_topk_k5to640.pdf", plot=p)
