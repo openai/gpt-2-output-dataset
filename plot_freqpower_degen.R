@@ -65,3 +65,22 @@ d_uncond_topk <- rbindlist(list(d_uncond_topk, d_uncond_gold))
 p <- ggplot(d_uncond_topk, aes(freq, power)) +
   geom_smooth(aes(linetype = k, fill = k, colour = k))
 ggsave("plot/degen/uncond_topk_k5to640.pdf", plot=p)
+
+
+# Unconditional, top p, p from 0.1 to 0.9
+d_uncond_topp <- data.table(freq=numeric(),
+                            power=numeric(),
+                            p=character())
+for (p in 1:9) {
+  tmp <- fread(paste0("plot/degen/unconditional_topp_p=0.", p, "_large.model=gpt2.density.csv"))
+  tmp$p <- paste0("0.", p)
+  d_uncond_topp <- rbindlist(list(d_uncond_topp, tmp))
+}
+# combine with gold
+d_uncond_gold <- fread("plot/degen/unconditional_gold.model=gpt2.density.csv")
+d_uncond_gold$p <- "gold"
+d_uncond_topp <- rbindlist(list(d_uncond_topp, d_uncond_gold))
+
+p <- ggplot(d_uncond_topp, aes(freq, power)) +
+  geom_smooth(aes(linetype = p, fill = p, colour = p))
+ggsave("plot/degen/uncond_topp_p1to9.pdf", plot=p)
