@@ -63,7 +63,7 @@ def process_single(model, tokenizer, args):
         output_file = os.path.join(args.data_dir, f'{args.source}.{args.split}.model={args.model}.nll')
 
     with open(output_file, 'w') as fw:
-        for line in tqdm(data[:32]):
+        for line in tqdm(data):
             encoded_input = tokenizer(line, return_tensors='pt').to(device)
             input_ids = encoded_input['input_ids']
 
