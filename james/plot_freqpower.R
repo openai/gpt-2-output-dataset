@@ -4,16 +4,19 @@ require(data.table)
 ##
 # Estimate NLL on webtext.test using 4 models
 d_webtext_glm2b <- fread("/home/james/Workspace/gpt-2-output-dataset/james/webtext.train._glm2b.model=.freq_power_glm2b.csv")
+d_webtext_human <- fread("/home/james/Workspace/gpt-2-output-dataset/james/webtext.None.model=.webtext.None.model=.nll.csv")
+
 # d_webtext_medium <- fread("plot/webtext.test.model=gpt2-medium.freq_power.csv")
 # d_webtext_large <- fread("plot/webtext.test.model=gpt2-large.freq_power.csv")
 # d_webtext_xl <- fread("plot/webtext.test.model=gpt2-xl.freq_power.csv")
 
 d_webtext_glm2b$model = "glm2b"
+d_webtext_human$model = "human"
 # d_webtext_medium$model = "gpt2-medium"
 # d_webtext_large$model = "gpt2-large"
 # d_webtext_xl$model = "gpt2-xl"
 
-d_webtext_c <- rbindlist(list(d_webtext_glm2b))
+d_webtext_c <- rbindlist(list(d_webtext_glm2b, d_webtext_human))
 p_webtext_c <- ggplot(d_webtext_c, aes(freq, power)) +
   geom_smooth(aes(linetype = model, fill = model, colour = model))
 ggsave("/home/james/Workspace/gpt-2-output-dataset/webtext.train._glm2b.model=.freq_power_glm2b.pdf", plot=p_webtext_c)
