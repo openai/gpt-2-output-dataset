@@ -10,7 +10,7 @@ We look forward to the research produced using this data!
 
 For each model, we have a training split of 250K generated examples, as well as validation and test splits of 5K examples.
 
-All data is located in Google Cloud Storage, under the directory `gs://gpt-2/output-dataset/v1`.
+All data is located in Google Cloud Storage, under the directory `gs://gpt-2/output-dataset/v1`.  (NOTE: everything has been migrated to Azure `https://openaipublic.blob.core.windows.net/gpt-2/output-dataset/v1/`)
 
 There, you will find files:
 
